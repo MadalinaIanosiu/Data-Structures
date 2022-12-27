@@ -1,0 +1,136 @@
+//Ex 2
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<fstream>
+
+class BinaryTree {
+	struct Node {
+		int info;
+		Node* parent;
+		Node* left;
+		Node* right;
+
+		Node() {
+			info = NULL;
+			parent = nullptr;
+			left = nullptr;
+			right = nullptr;
+		}
+
+		Node(int info) {
+			this->info = info;
+			parent = nullptr;
+			left = nullptr;
+			right = nullptr;
+		}
+	};
+	Node* root;
+	Node* levelInsert(std::vector<int>vec, Node* root, int index, int lenght);
+public:
+	BinaryTree() {
+		root = nullptr;
+	}
+	void read();
+	void printLevels();
+	void printInorder(Node*root);
+	void printPreorder(Node* root);
+	void printPostorder(Node* root);
+	Node* getRoot();
+};
+
+void BinaryTree::read()
+{
+	std::ifstream f("file.txt");
+	int dim;
+	f >> dim;
+	std::vector<int>vec;
+	for (int i = 0; i < dim; i++) {
+		int k;
+		f >> k;
+		vec.push_back(k);
+	}
+	root= levelInsert(vec,root,0,dim);
+}
+
+void BinaryTree::printLevels()
+{
+	std::queue<BinaryTree::Node*>queue;
+	queue.push(root);
+	while (!queue.empty()) {
+		Node* current = queue.front();
+		queue.pop();
+		std::cout << current->info<<" ";
+		if (current->left != nullptr)
+			queue.push(current->left);
+		if (current->right != nullptr)
+			queue.push(current->right);
+	}
+}
+void BinaryTree::printInorder(Node* root)
+{
+	if (root != nullptr) {
+		printInorder(root->left);
+		std::cout << root->info << " ";
+		printInorder(root->right);
+	}
+}
+void BinaryTree::printPreorder(Node* root)
+{
+	if (root != nullptr) {
+
+		std::cout << root->info << " ";
+		printPreorder(root->left);
+		printPreorder(root->right);
+	}
+}
+void BinaryTree::printPostorder(Node* root)
+{
+	if (root != nullptr) {
+		printPostorder(root->left);
+		printPostorder(root->right);
+		std::cout << root->info << " ";
+	}
+
+}
+BinaryTree::Node* BinaryTree::getRoot()
+{
+	return root;
+}
+
+BinaryTree::Node* BinaryTree::levelInsert(std::vector<int> vec, Node* root, int index, int lenght)
+{
+	if (index < lenght) {
+		Node* tmp = new Node(vec[index]);
+		root = tmp;
+
+		root->left = levelInsert(vec, root->left, 2 * index + 1, lenght);
+		if(root->left !=nullptr)
+		  root->left->parent = root;
+
+		root->right = levelInsert(vec, root->right, 2 * index + 2, lenght);
+		if (root->right != nullptr)
+		   root->right->parent = root;
+	}
+	return root;
+}
+int main()
+{
+	BinaryTree b;
+	b.read();
+	std::cout << "Afisare pe niveluri: ";
+	b.printLevels();
+	std::cout << std::endl;
+	std::cout << "Afisare in inordine: ";
+	b.printInorder(b.getRoot());
+	std::cout << std::endl;
+	std::cout << "Afisare in preordine: ";
+	b.printPreorder(b.getRoot());
+	std::cout << std::endl;
+	std::cout << "Afisare in postordine: ";
+	b.printPostorder(b.getRoot());
+
+
+
+	
+}
