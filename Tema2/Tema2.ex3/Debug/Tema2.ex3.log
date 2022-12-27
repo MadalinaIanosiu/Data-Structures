@@ -1,0 +1,3 @@
+﻿  Tema2.ex3.cpp
+C:\Users\madah\OneDrive\Desktop\Structuri de date\Tema2.ex3\Tema2.ex3.cpp(124,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Tema2.ex3.vcxproj -> C:\Users\madah\OneDrive\Desktop\Structuri de date\Tema2.SD\Debug\Tema2.ex3.exe
